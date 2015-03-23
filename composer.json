@@ -1,0 +1,15 @@
+{
+  "name": "bangbang93/jb233",
+  "description": "jb233.com",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "bangbang93",
+      "email": "bangbang93@163.com"
+    }
+  ],
+  "require": {
+    "slim/slim": "2.*"
+  }
+}
