@@ -17,32 +17,45 @@ class UserModel extends BaseModel{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function add($nickname, $password, $email, $phone, $realname){
-        $stmt = $this->pdoStmt = self::$pdo->prepare("INSERT INTO $this->table (`nickname`, `password`, `email`, `phone`, `realname`) VALUES (:nickname, :password, :email, :phone, :realname)");
-        $stmt->execute([
-            ':nickname'=>$nickname,
-            ':password'=>$password,
-            ':email'=>$email,
-            ':phone'=>$phone,
-            ':realname'=>$realname
-        ]);
-        if ($stmt->errorCode()!= '00000'){
-            throw new Exception($stmt->errorInfo());
-        }
-    }
-
-    public function getUserByEmail($email){
-        $stmt = $this->pdoStmt = self::$pdo->prepare("SELECT * FROM $this->table FROM `email` = :email");
-        $stmt->execute([':email'=>$email]);
+    public function getUserByPhone($phone){
+        $stmt = $this->select('*', ['phone'=>$phone]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUserByEmail($email){
+        $stmt = $this->select('*', ['email'=>$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUser($method, $value){
+        if (!in_array(strtolower($method), ['uid', 'phone', 'email', 'id']));
+        $method = 'getUserBy'.ucfirst($method);
+        return $this->$method;
+    }
+
+    public function add($nickname, $password, $email, $phone, $realname){
+        $stmt = $this->insert([
+            'nickname'=>$nickname,
+            'password'=>md5(md5($password).self::$config['passwordSalt']),
+            'email'=>$email,
+            'phone'=>$phone,
+            'realname'=>$realname
+        ]);
+        return $stmt->errorCode() == '00000';
+    }
+
     public function update($uid, $field, $value = null){
-        if (!is_array($field)){
+        if (is_string($field)){
             $old_field = $field;
             $field = [];
             $field[$old_field] = $value;
         }
-        $stmt = $this->pdoStmt = self::$pdo->prepare("UPDATE $this->table SET ");
+        $stmt = parent::update($field, ['uid'=>$uid]);
+        return $stmt->rowCount();
+    }
+
+    public function getById($id)
+    {
+        return $this->getUserByUid($id);
     }
 }

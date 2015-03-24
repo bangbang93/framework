@@ -129,4 +129,6 @@ abstract class BaseModel {
         $stmt->execute($value);
         return $stmt;
     }
+
+    abstract public function getById($id);
 }

@@ -12,7 +12,13 @@ $appConfig['view'] = new \Slim\Views\Twig();
 
 //init slim
 $app = new \Slim\Slim($appConfig);
-require_once '../route/route.php';
+session_start();
+
+
+//setup db
+require_once '../models/BaseModel.php';
+BaseModel::init($config['db']);
+
 
 //setup env
 $app->configureMode('development', function () use ($app){
@@ -31,9 +37,8 @@ $app->configureMode('production', function () use ($app){
     ];
 });
 
-//setup db
-require_once '../models/BaseModel.php';
-BaseModel::init($config['db']);
+//setup router
+require_once '../route/route.php';
 
 $app->get('/', function () use ($app){
     $app->render('index.html', [
