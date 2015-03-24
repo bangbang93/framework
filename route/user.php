@@ -14,3 +14,8 @@ $app->get('/register', function (){
 $app->post('/register', function (){
 
 });
+$app->get('/list', function (){
+    require_once '../models/UserModel.php';
+    $users = new UserModel();
+    var_dump($users->getUserByUid(1));
+});

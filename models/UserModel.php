@@ -13,8 +13,7 @@ class UserModel extends BaseModel{
     }
 
     public function getUserByUid($uid){
-        $stmt = $this->pdoStmt = self::$pdo->prepare("SELECT * FROM $this->table WHERE `uid` = :uid");
-        $stmt->execute([':uid'=>$uid]);
+        $stmt = $this->select('*', ['uid'=>$uid]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 

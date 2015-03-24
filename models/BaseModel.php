@@ -51,12 +51,16 @@ abstract class BaseModel {
     }
 
     /**
-     * @param array $col
+     * @param $col |$data
      * @param array $data
      * @return PDOStatement
      */
-    public function select(array $col, array $data = null){
-        $sql = "SELECT (`".implode('`,`', $col)."`) FROM `$this->table`";
+    public function select($col = '*', array $data = null){
+        if (!is_array($col)){
+            $col = [$col];
+        }
+
+        $sql = "SELECT `".implode('`,`', $col)."` FROM `$this->table`";
         $value = [];
         if (!empty($data)){
             $where = [];
@@ -77,7 +81,7 @@ abstract class BaseModel {
      * @param array $data
      * @return string
      */
-    public function count($col, array $data = null){
+    public function count($col = '*', array $data = null){
         if (is_array($col)){
             $data = $col;
             $col = '*';
