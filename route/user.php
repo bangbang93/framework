@@ -11,3 +11,6 @@ $app->get('/', function (){
 $app->get('/register', function (){
     echo 'register page';
 });
+$app->post('/register', function (){
+
+});

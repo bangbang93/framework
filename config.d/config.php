@@ -6,5 +6,5 @@
  * Time: 23:40
  */
 return [
-    'debug'=>true
+    'mode'=>'development'
 ];

@@ -1,18 +1,20 @@
 <?php
+//bootstrap
 $config = require_once '../config/config.php';
+$config['db'] = require_once '../config/database.php';
 require_once '../vendor/autoload.php';
 
+//init config
+$appConfig = [];
+$appConfig['mode'] = $config['mode'];
+$appConfig['templates.path'] = '../view';
+$appConfig['view'] = new \Slim\Views\Twig();
 
-$app_config = [];
-$app_config['mode'] = $config['mode'];
-$app_config['templates.path'] = '../view';
-$app_config['view'] = new \Slim\Views\Twig();
-
-
-$app = new \Slim\Slim($app_config);
+//init slim
+$app = new \Slim\Slim($appConfig);
 require_once '../route/route.php';
 
-
+//setup env
 $app->configureMode('development', function () use ($app){
     $app->config([
         'debug'=>true
@@ -28,6 +30,10 @@ $app->configureMode('production', function () use ($app){
         'cache'=>realpath(__DIR__.'/../cache')
     ];
 });
+
+//setup db
+require_once '../models/BaseModel.php';
+BaseModel::init($config['db']);
 
 $app->get('/', function () use ($app){
     $app->render('index.html', [
