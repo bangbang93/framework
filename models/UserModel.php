@@ -13,17 +13,17 @@ class UserModel extends BaseModel{
     }
 
     public function getUserByUid($uid){
-        $stmt = $this->select('*', ['uid'=>$uid]);
+        $stmt = $this->select(['uid'=>$uid]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserByPhone($phone){
-        $stmt = $this->select('*', ['phone'=>$phone]);
+        $stmt = $this->select(['phone'=>$phone]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserByEmail($email){
-        $stmt = $this->select('*', ['email'=>$email]);
+        $stmt = $this->select( ['email'=>$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 

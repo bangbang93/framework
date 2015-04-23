@@ -56,6 +56,10 @@ abstract class BaseModel {
      * @return PDOStatement
      */
     public function select($col = '*', array $data = null){
+        if ($data == null){
+            $data = $col;
+            $col = '*';
+        }
         if (!is_array($col)){
             $col = [$col];
         }
