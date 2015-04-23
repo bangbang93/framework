@@ -59,15 +59,12 @@ abstract class BaseModel {
      * @return PDOStatement
      */
     public function select($col = '*', array $data = null){
-        if ($data == null){
-            $data = $col;
-            $col = '*';
-        }
         if (!is_array($col)){
-            $col = [$col];
+            $sql = "SELECT $col FROM `$this->table`";
+        } else {
+            $sql = "SELECT `".implode('`,`', $col)."` FROM `$this->table`";
         }
 
-        $sql = "SELECT `".implode('`,`', $col)."` FROM `$this->table`";
         $value = [];
         if (!empty($data)){
             $where = [];
