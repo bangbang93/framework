@@ -12,6 +12,9 @@ abstract class BaseModel {
     public static $pdo;
     protected static $config;
     protected $pdoStmt;
+
+    const PDO_NO_ERROR = '00000';
+
     public function __construct($config = null){
         if (empty($config)){
             if (self::$pdo == null){
